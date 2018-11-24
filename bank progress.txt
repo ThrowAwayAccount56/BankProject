@@ -1,0 +1,45 @@
+ Financial Tracker
+ - void AddCash(double) throw YouDontgotthatmuchmoney 
+ - CalculateNetSavings() // how to deal with child accounts?
+ - ArrayList<double> CalculateWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
+ - ArrayList<double>CalculateMonthlyExpenses // see above 
+ - ArrayList<double>CalculateYearlyExpenses // see above
+ - void DisplayExpenses() // graphs the expenses through the gui
+............................
+AccountCreation
+ AccountCreation(Customer); // Initializes all the variables;
+ boolean isValidInput(); // checks whether account parameter, i.e ssn, email, etc, are valid
+ 
+...........................
+AccountDeletion
+ AccountDeletion(); 
+ boolea IsAccountDeleted() // deletes
+
+...........................
+BankAccount
+ Protected static double debt;
+ void DepositMoney(double) throw YouDontgotthatmuchmoney //valid check number?
+ void TransferMoney(BankAccount); 
+ boolean IsMinumumReached() // checks if the customer has the minimum amount of money to not be charged
+ 
+...........................
+CheckingAccount extends BankAccount
+ boolean isOverdraftProtected();
+ void ChargeOverdraft();
+ void SendMoneyToExternalAccount(mock BankAccount); // make believe paying a different account owner
+...........................
+InvestmentAccount extends BankAccount
+ InvestmentAccount(double cash) throws Youdontgatthatmuchmoney 
+ {
+   if(moneybelow < Required) throw you......
+ }
+...........................
+SavingsAccount extends BankAccount
+ double calculateinterest()
+ double addInterest()
+ 
+...........................
+Customer
+ boolean isAccountRemoved()
+ // setters and getters below
+...........................
