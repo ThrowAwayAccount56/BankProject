@@ -1,10 +1,17 @@
  Financial Tracker
- - void AddCash(double) throw YouDontgotthatmuchmoney 
- - CalculateNetSavings() // how to deal with child accounts?
- - ArrayList<double> CalculateWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
- - ArrayList<double>CalculateMonthlyExpenses // see above 
- - ArrayList<double>CalculateYearlyExpenses // see above
- - void DisplayExpenses() // graphs the expenses through the gui
+ + FinancialTracker()
+ + void AddCash(double) throw YouDontgotthatmuchmoneyException 
+ + double GetExpenses(String PeriodOfTime) // Retrieves Expenses. Either weekly, monthly, yearly. Seperate into multi fuct?
+ - double CalculateWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
+ - double CalculateMonthlyExpenses // see above 
+ - double CalculateYearlyExpenses // see above
+ - ArrayList<double> GetWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
+ - ArrayList<double> GetMonthlyExpenses // see above 
+ - ArrayList<double> GetYearlyExpenses // see above
+ + void DisplayExpenses() // graphs the expenses through the gui
+ 
+ - List<Integer> CashSpentPerDay = new ArrayList<>();
+ - Date StartDate;
 ............................
 AccountCreation
  AccountCreation(Customer); // Initializes all the variables;
@@ -18,6 +25,7 @@ AccountDeletion
 ...........................
 BankAccount
  Protected static double debt;
+ Protected FinancialTracker finaTrack;
  void DepositMoney(double) throw YouDontgotthatmuchmoney //valid check number?
  void TransferMoney(BankAccount); 
  boolean IsMinumumReached() // checks if the customer has the minimum amount of money to not be charged
@@ -39,7 +47,23 @@ SavingsAccount extends BankAccount
  double addInterest()
  
 ...........................
-Customer
- boolean isAccountRemoved()
+Customer // Will inject Financial Tracker to other Accounts
+ + Customer();
+ + boolean isAccountRemoved()
+ + boolean DeleteAccount(); 
+ + void OpenSavingsAccount();
+ + void OpenCheckingAccount();
+ + void OpenInvestmentAccount();
+ - 
  // setters and getters below
+ 
+ // Variables
+ - FinancialTracker finaTrack; 
+ - List<BankAccount> accounts;
 ...........................
+InterestRateManager // Because our bank account relies on interest rate, the IRM will determine the interest Rate for each account
+  - Integer DetermineInterestRate // need more info
+  + Integer GetInterestRate
+  
+  //Variables
+  - int interestRate;
