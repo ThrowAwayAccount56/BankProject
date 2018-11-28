@@ -63,7 +63,7 @@ AccountLogin // Should this be a class? maybe place in appmanager?
 - IsInputValid();
 
 ...........................
-Website
+Website // is the website responsible for accountcreation or login?
 ...........................
 InterestRateManager - //We'll assume that the savings account and investmentaccount gain the same interestrate
 - double interestRate;
@@ -74,7 +74,7 @@ GetInterestRate();
 BankTeller // Responible for the prompts. For example, add money, transfer money, etc. maybe use the website for this? 
 - Date date; 
 - List<BankAccount> bankAccounts;
-+ BankMAnager() // Determines whether to create a new account or login to a current one
++ BankTeller()
 + GetDate() // 
 + AddCash(BankAccount)
 + CreateBankAccount(String AccountType);
