@@ -1,10 +1,10 @@
- Financial Tracker
- - void AddCash(double) throw YouDontgotthatmuchmoney 
- - CalculateNetSavings() // how to deal with child accounts?
- - ArrayList<double> CalculateWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
- - ArrayList<double>CalculateMonthlyExpenses // see above 
- - ArrayList<double>CalculateYearlyExpenses // see above
- - void DisplayExpenses() // graphs the expenses through the gui
+Financial Tracker
+  public void AddCash(double) throw YouDontgotthatmuchmoney 
+  private double GetTotalExpenses() // how to deal with child accounts?
+  private ArrayList<double> GetWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
+  private ArrayList<double> GetMonthlyExpenses // see above 
+  private ArrayList<double> GetYearlyExpenses // see above
+  public void DisplayExpenses() // graphs the expenses through the gui
 ............................
 AccountCreation
  AccountCreation(Customer); // Initializes all the variables;
@@ -12,34 +12,80 @@ AccountCreation
  
 ...........................
 AccountDeletion
- AccountDeletion(); 
- boolea IsAccountDeleted() // deletes
+ AccountDeletion(Customer); //sets the customer to null.
+ boolea IsAccountDeleted(Customer); // checks if customer is pointing to null
 
 ...........................
 BankAccount
  Protected static double debt;
- void DepositMoney(double) throw YouDontgotthatmuchmoney //valid check number?
+
+ void DepositMoney(double) throw YouDontgotthatmuchmoney //if customer is in debt they can't deposit money
  void TransferMoney(BankAccount); 
  boolean IsMinumumReached() // checks if the customer has the minimum amount of money to not be charged
- 
+ void updateMe(); // calls isMinimumReached
+ boolean isCustomerInDebt();
 ...........................
 CheckingAccount extends BankAccount
+private cashInAccount;
  boolean isOverdraftProtected();
  void ChargeOverdraft();
  void SendMoneyToExternalAccount(mock BankAccount); // make believe paying a different account owner
+ boolean payDebt();
 ...........................
 InvestmentAccount extends BankAccount
  InvestmentAccount(double cash) throws Youdontgatthatmuchmoney 
- {
-   if(moneybelow < Required) throw you......
- }
+
 ...........................
 SavingsAccount extends BankAccount
- double calculateinterest()
- double addInterest()
- 
+private cashInAccount;
+- double insuredLimit; // initialized to 250,000. 
++ SavingsAccount() // injects InterestRateManager, FinancialTracker
+- double compoundInterest()
+- boolean isInsuredLimitReached();
++ double getTotalMoneyMade()
++ double wireMoney() 
+- boolean isILimitReached(); // Used for withdrawing money
++ void updateMe() // calls compoundInterest and isMinimumReached
+ boolean payDebt();
 ...........................
 Customer
  boolean isAccountRemoved()
- // setters and getters below
+ //setters amd getters beloe
++ AddCash(BankAccount) // Tells the bankteller to add cash?
++ CheckAnalytics(int StartDate, int EndDate);
++ DisplayCurrentBankAccounts(); //tells the bank teller
++ CreateBankAccount(String AccountType); // tells the bank teller
+
+
 ...........................
+AccountLogin // Should this be a class? maybe place in appmanager?
++ Map<String, Integer> PrompForUserCredentials() throws InvalidAccountPassword Exception;
+- IsInputValid();
+
+...........................
+Website
+...........................
+InterestRateManager - //We'll assume that the savings account and investmentaccount gain the same interestrate
+- double interestRate;
++InterestRateMAnager();
+-DetermineInterestRate();
+GetInterestRate();
+...........................
+BankTeller // Responible for the prompts. For example, add money, transfer money, etc. maybe use the website for this? 
+- Date date; 
+- List<BankAccount> bankAccounts;
++ BankMAnager() // Determines whether to create a new account or login to a current one
++ GetDate() // 
++ AddCash(BankAccount)
++ CreateBankAccount(String AccountType);
++ DisplayCurrentBankAccounts();
+...........................
+AccountRepository // Stores a bunch of acconuts
+public Static List<Customer> customers = new ArrayList<>[];
+public Static boolean searchDataBase(Map<String, Integer> accountCredentials);
+public void addUserToDataBase(Map<String, Integer> accountCredentials);
+..........................
+AccountUpdater
+- List<BankAccount> BankAccount;
++ AccountUpdater(List<BankAccount>)
+- UpdateBankAccounts() cycles through them and calls their updateMe funcrion
