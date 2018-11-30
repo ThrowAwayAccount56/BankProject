@@ -16,7 +16,9 @@ public class CheckingAccount extends BankAccount {
     @Override
     public void depositMoney(double amount) throws InvalidMoneyAmount {
         if(amount > maxExchange) throw new InvalidMoneyAmount();
-        else cashInAccount+=amount;
+        else{
+            cashInAccount= amount - debt;
+        }
     }
 
     @Override
