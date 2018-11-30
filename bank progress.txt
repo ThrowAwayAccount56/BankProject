@@ -1,45 +1,144 @@
- Financial Tracker
- - void AddCash(double) throw YouDontgotthatmuchmoney 
- - CalculateNetSavings() // how to deal with child accounts?
- - ArrayList<double> CalculateWeeklyExpenses() // choose which week, for new accounts the rest of the days default to 0?
- - ArrayList<double>CalculateMonthlyExpenses // see above 
- - ArrayList<double>CalculateYearlyExpenses // see above
- - void DisplayExpenses() // graphs the expenses through the gui
-............................
-AccountCreation
- AccountCreation(Customer); // Initializes all the variables;
- boolean isValidInput(); // checks whether account parameter, i.e ssn, email, etc, are valid
+Financial Tracker- 
+ private  Map<dates,Double> financialAnalytics; //maps dates to money spend on those days.
  
+ public FinancialTracker() //sets the start date 
+ public void addCash(date, double) throw YouDontgotthatmuchmoney 
+ public double compareDailySavings(date dayOne, date dayTwo) 
+ public double compareWeeklySavings(///To be determined)
+ public double compareMonthlySavings(///To be determined)
+ public double getDailyExpenses(date initial);
+ public List<Double> retrieveExpenseAnaltyics(date initial, date final);
+ public void displayExpenses() // graphs the expenses through the gui
 ...........................
-AccountDeletion
- AccountDeletion(); 
- boolea IsAccountDeleted() // deletes
+BankAccount - Abstract
+protected double minimumAccountBalance; //
+protected double minimumCharge; //
+protected double maxExchange;
+protected FinancialTracker financialTracker;
+protected double debt;
+protected double maxDebtAllowed;
 
-...........................
-BankAccount
- Protected static double debt;
- void DepositMoney(double) throw YouDontgotthatmuchmoney //valid check number?
- void TransferMoney(BankAccount); 
- boolean IsMinumumReached() // checks if the customer has the minimum amount of money to not be charged
- 
+public BankAccount(FinancialTracker financialTracker);
+public abstract void depositMoney(double amount);
+public abstract void depositMoneyUsingCheck(String bankRoutingNumber, String checkAccountNumber, double amount) throws InvalidMoneyAmount;
+public abstract void transferMoney(BankAccount recipient, double amount);
+public abstract boolean isMinimumReached();
+public abstract double getMoneyInAccount();
+public abstract void updateAccount(); // Used to check for a minimum fee. Should only be used monthly?
+
+public double getMinimumCharge();
+public boolean isCheckNumberValid(String bankRoutingNumber, String checkAccountNumber)'
 ...........................
 CheckingAccount extends BankAccount
- boolean isOverdraftProtected();
- void ChargeOverdraft();
- void SendMoneyToExternalAccount(mock BankAccount); // make believe paying a different account owner
-...........................
-InvestmentAccount extends BankAccount
- InvestmentAccount(double cash) throws Youdontgatthatmuchmoney 
- {
-   if(moneybelow < Required) throw you......
- }
+private double cashInAccount;
+private boolean overDraftProtection;
+private double overDraftFee;
+
+public CheckingAccount(FinancialTracker financialTracker, boolean overDraftProtection);
+
+//OverridenFunctions: anything that directly manipulates the cash in an account
+public void depositMoney(double amount);
+public void depositMoneyUsingCheck(String bankRoutingNumber, String checkAccountNumber, double amount) throws InvalidMoneyAmount;
+public void transferMoney(BankAccount recipient, double amount);
+public boolean isMinimumReached();
+public double getMoneyInAccount();
+public void updateAccount();
+
+//Private Functions
+private void chargeOverDraftFee();
+private boolean isOverDraftProtected();
 ...........................
 SavingsAccount extends BankAccount
- double calculateinterest()
- double addInterest()
- 
+private cashInAccount;
+private double accountWithdrawalLimit; // reset monthly, can it go below 0?
+private final double interestRate; // is it violatile?
+
+public SavingsAccount(FinancialTracker finacialTracker);
+
+//OverridenFunctions: anything that directly manipulates the cash in an account
+public void depositMoney(double amount);
+public void depositMoneyUsingCheck(String bankRoutingNumber, String checkAccountNumber, double amount) throws InvalidMoneyAmount;
+public void transferMoney(BankAccount recipient, double amount);
+public boolean isMinimumReached();
+public double getMoneyInAccount();
+public void updateAccount();
+
+//PrivateFunctions
+private boolean isWithdrawlLimitReached(); 
+private void addCompountInterest();
 ...........................
 Customer
- boolean isAccountRemoved()
- // setters and getters below
+private CustomerAccountManager accountManager;
+private CusomerInfo customerInfo;
+
+public Customer(accountManager, CustomerInfo);
+public boolean isAccountRemoved();
+public boolean changeUserPassWord();
+
+// all functions below will call the accountmanager
+public void CreateBankAccount(String accountType) throws AccountDoesntExistException; 
+public boolean removeBankAccount(); throws AccountDoesntExistException
+public void DeleteAccount(String accountName) throws AccountDoesntExistException; 
+public void AddCash(String accountName, double amount); throws AccountDoesntExistException; 
+public double GetAccountBalance(String accountName); throws AccountDoesntExistException
+public String getSavingsAccountName(); throws AccountDoesntExistException
+public String getCheckingAccountName(); throws AccountDoesntExistException
+public void CheckAnalytics(Date date); //displays user's spendinghabits
+
+public boolean isAccountRemoved();
 ...........................
+CustomerInfo
+private String customerName;
+private String customerPassWord;
+private String customerSSN;
+private String customerEmail;
+private String passwordHash;
+
+CustomerInfo(String,String,String,String){}
+private createPassWordHash();
+//GetterFunctions
+...........................
+CustomerAccountManager - middleMan
+Date date;
+FinancialTracker financialTracker;
+List<BankAccount> bankAccounts;
+
+public void CreateBankAccount(String accountType) throws AccountDoesntExistException; 
+public boolean removeBankAccount(); throws AccountDoesntExistException
+public void DeleteAccount(String accountName) throws AccountDoesntExistException; 
+public void AddCash(String accountName, double amount); 
+public double GetAccountBalance(String accountName); throws AccountDoesntExistException
+public String getSavingsAccountName(); throws AccountDoesntExistException
+public String getCheckingAccountName(); throws AccountDoesntExistException
+public void CheckAnalytics(Date date); //displays user's spendinghabits
+...........................
+AccountLogin
+public Map<String, Integer> PrompForUserCredentials() throws InvalidAccountPassword Exception;
+private IsInputValid();
+...........................
+AccountRepository // Stores a bunch of accounts
+AccountRepository() {};
+public Static List<Customer> customers = new ArrayList<>[];
+public Static boolean searchAccountRepository(Map<String, String> accountCredentials);
+public Static void addCustomerToRepository(Customer);
+...........................
+AccountDeletion
+ AccountDeletion(Customer); //sets the customer to null.
+ boolean IsAccountDeleted(Customer); // checks if customer is pointing to null
+............................
+AccountCreation
+ public AccountCreation(Customer); // Initializes all the variables;
+ public void promptUserForInfo();
+ public boolean isValidInput(); // checks whether account parameter, i.e ssn, email, etc, are valid
+...........................
+InvalidMoneyException extends runtimeException
+public InvalidMoneyAmount() {};
+..............................
+AccountDoesntExistException; extends runtimeException
+public AccountDoesntExistException();
+.........................................
+Website
+//Website Stuff 
+...........................
+BankApplication
+///DriverStuff
