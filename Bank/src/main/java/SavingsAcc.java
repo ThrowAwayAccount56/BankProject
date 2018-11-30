@@ -48,6 +48,7 @@ public class SavingsAccount extends BankAccount {
     public void updateAccount () {
         if (!IsMinumumReached()) cashInAccount =- minimumCharge;
         addCompoundInterest();
+        accountWithdrawalLimit = 20,000;
     }
 
     @Override
